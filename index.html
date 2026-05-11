@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shale-Namma Pride | School Transparency Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Noto+Sans+Kannada:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --saffron: #FF6B00;
+    --gold: #FFB800;
+    --green: #1A7A4A;
+    --green-light: #2AAA68;
+    --sky: #0077CC;
+    --cream: #FFF8F0;
+    --white: #FFFFFF;
+    --dark: #1A1A2E;
+    --text: #2D2D2D;
+    --muted: #6B7280;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    --radius: 20px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LANGUAGE TOGGLE */
+  .lang-bar {
+    background: var(--dark);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px 32px;
+    gap: 8px;
+  }
+  .lang-bar span { color: #aaa; font-size: 13px; }
+  .lang-btn {
+    background: none; border: 1.5px solid #555; color: #ddd;
+    border-radius: 20px; padding: 4px 14px; font-size: 13px;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--saffron); border-color: var(--saffron); color: #fff;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--green) 0%, #0a5c36 60%, var(--dark) 100%);
+    padding: 0 32px 0 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content:'';
+    position:absolute; top:-60px; right:-80px;
+    width:320px; height:320px;
+    background: radial-gradient(circle, rgba(255,184,0,0.18) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  header::after {
+    content:'';
+    position:absolute; bottom:-40px; left:10%;
+    width:180px; height:180px;
+    background: radial-gradient(circle, rgba(255,107,0,0.13) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 24px;
+    padding: 28px 0 22px;
+    position: relative; z-index:2;
+  }
+  .school-emblem {
+    width: 72px; height: 72px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem; font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .header-text h1 span { color: var(--gold); }
+  .header-text .subtitle {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.95rem; margin-top: 4px;
+  }
+  .header-text .kannada-sub {
+    color: rgba(255,255,255,0.55);
+    font-family: 'Noto Sans Kannada', sans-serif;
+    font-size: 0.85rem;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--white);
+    border-bottom: 2px solid #F0EDE8;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 0; overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 18px 26px;
+    font-weight: 700; font-size: 0.93rem;
+    cursor: pointer; border: none; background: none;
+    color: var(--muted); border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+    font-family: 'Nunito', sans-serif;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-tab .tab-icon { font-size: 1.1rem; }
+  .nav-tab.active { color: var(--green); border-bottom-color: var(--green); }
+  .nav-tab:hover { color: var(--green); background: rgba(26,122,74,0.04); }
+
+  /* MAIN */
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section { display: none; animation: fadeUp 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(18px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  /* SECTION HEADER */
+  .sec-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px;
+  }
+  .sec-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .sec-icon.meal { background: linear-gradient(135deg, #FF6B00, #FFB800); }
+  .sec-icon.facility { background: linear-gradient(135deg, #0077CC, #00BCD4); }
+  .sec-icon.stars { background: linear-gradient(135deg, #9C27B0, #E91E63); }
+  .sec-icon.feedback { background: linear-gradient(135deg, #1A7A4A, #4CAF50); }
+  .sec-header h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--dark);
+  }
+  .sec-header p { color: var(--muted); font-size: 0.9rem; }
+
+  /* ── DASHBOARD / HOME ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 18px; margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--card-shadow);
+    display: flex; align-items: center; gap: 16px;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-4px); }
+  .stat-icon { font-size: 2rem; }
+  .stat-val { font-family:'Baloo 2',cursive; font-size: 1.8rem; font-weight: 800; line-height:1; }
+  .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+
+  .hero-notice {
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    color: var(--white);
+    margin-bottom: 28px;
+    position: relative; overflow: hidden;
+  }
+  .hero-notice::after {
+    content:'🏫'; position:absolute; right:24px; bottom:-12px;
+    font-size: 80px; opacity: 0.15;
+  }
+  .hero-notice h3 { font-family:'Baloo 2',cursive; font-size:1.3rem; margin-bottom: 6px; }
+  .hero-notice p { opacity: 0.88; font-size: 0.93rem; max-width: 500px; }
+
+  /* ── MEAL SECTION ── */
+  .meal-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 0;
+  }
+  .meal-photo {
+    width: 180px; flex-shrink: 0;
+    background: linear-gradient(135deg, #FF6B00, #FFB800);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+    position: relative;
+  }
+  .meal-photo .date-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.45); color: #fff;
+    border-radius: 8px; padding: 4px 10px;
+    font-size: 11px; font-weight: 700;
+  }
+  .meal-info { padding: 22px 26px; flex: 1; }
+  .meal-info h3 { font-family:'Baloo 2',cursive; font-size:1.2rem; color:var(--dark); }
+  .meal-items {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .meal-tag {
+    background: #FFF3E0; color: var(--saffron);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 0.82rem; font-weight: 700;
+    border: 1.5px solid #FFD0A0;
+  }
+  .meal-meta { margin-top: 14px; color: var(--muted); font-size: 0.85rem; }
+  .meal-meta span { margin-right: 18px; }
+
+  .update-form {
+    background: var(--white); border-radius: var(--radius);
+    padding: 24px 28px; box-shadow: var(--card-shadow);
+  }
+  .update-form h3 { font-family:'Baloo 2',cursive; font-size:1.1rem; margin-bottom: 16px; color: var(--dark); }
+  .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .form-group { flex: 1; min-width: 180px; }
+  label { font-size: 0.82rem; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  input, textarea, select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 2px solid #E8E8E8;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.93rem;
+    outline: none;
+    transition: border 0.2s;
+    background: var(--cream);
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--green); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .btn {
+    padding: 12px 26px;
+    border-radius: 12px; border: none;
+    font-weight: 700; font-size: 0.93rem;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-green:hover { background: #155c37; transform: translateY(-2px); }
+  .btn-orange { background: var(--saffron); color: #fff; }
+  .btn-orange:hover { background: #cc5500; transform: translateY(-2px); }
+  .btn-blue { background: var(--sky); color: #fff; }
+  .btn-blue:hover { background: #005fa3; transform: translateY(-2px); }
+
+  /* ── FACILITY TOUR ── */
+  .facility-tabs {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px;
+  }
+  .ftab {
+    padding: 9px 20px; border-radius: 20px;
+    border: 2px solid #E0E0E0; background: var(--white);
+    font-weight: 700; font-size: 0.88rem;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--muted);
+  }
+  .ftab.active, .ftab:hover {
+    background: var(--sky); border-color: var(--sky); color: #fff;
+  }
+  .facility-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
+    gap: 18px;
+  }
+  .facility-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s;
+  }
+  .facility-card:hover { transform: translateY(-5px); }
+  .facility-thumb {
+    height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; position: relative;
+  }
+  .facility-thumb.lab { background: linear-gradient(135deg, #0077CC22, #00BCD422); }
+  .facility-thumb.library { background: linear-gradient(135deg, #9C27B022, #E91E6322); }
+  .facility-thumb.sports { background: linear-gradient(135deg, #FF6B0022, #FFB80022); }
+  .facility-thumb.toilet { background: linear-gradient(135deg, #1A7A4A22, #4CAF5022); }
+  .facility-thumb .quality-badge {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--green); color: #fff;
+    border-radius: 20px; padding: 3px 10px;
+    font-size: 11px; font-weight: 700;
+  }
+  .facility-info { padding: 14px 18px 18px; }
+  .facility-info h4 { font-weight: 800; font-size: 0.97rem; color: var(--dark); }
+  .facility-info p { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+  .facility-info .last-updated { font-size: 0.75rem; color: #aaa; margin-top: 8px; }
+
+  /* ── STUDENT STARS ── */
+  .stars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    gap: 22px;
+  }
+  .star-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 22px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .star-card:hover { transform: translateY(-5px); }
+  .star-card.week-winner::before {
+    content:'⭐ Star of the Week';
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--gold), var(--saffron));
+    color: #fff;
+    border-radius: 0 0 12px 12px;
+    padding: 4px 16px; font-size: 11px; font-weight: 800;
+    white-space: nowrap;
+  }
+  .star-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--saffron), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; margin: 0 auto 14px;
+    box-shadow: 0 4px 16px rgba(255,107,0,0.25);
+  }
+  .star-name { font-family:'Baloo 2',cursive; font-size:1.1rem; font-weight:800; color:var(--dark); }
+  .star-class { color: var(--muted); font-size:0.85rem; }
+  .star-achievement {
+    margin-top: 12px;
+    background: #F0FFF6;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 0.83rem; color: var(--green); font-weight: 700;
+  }
+  .star-date { color: #bbb; font-size: 0.78rem; margin-top: 10px; }
+
+  /* ── FEEDBACK ── */
+  .feedback-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media(max-width:700px){ .feedback-split { grid-template-columns:1fr; } }
+  .feedback-form-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 28px;
+    box-shadow: var(--card-shadow);
+  }
+  .feedback-form-card h3 { font-family:'Baloo 2',cursive; font-size:1.15rem; margin-bottom: 18px; color: var(--dark); }
+  .anon-toggle {
+    display: flex; align-items: center; gap: 10px;
+    margin: 14px 0;
+  }
+  .anon-toggle input[type=checkbox] {
+    width: 18px; height: 18px; border-radius: 4px;
+    accent-color: var(--green);
+  }
+  .anon-toggle label {
+    font-size: 0.88rem; color: var(--text); text-transform: none;
+    letter-spacing: 0; font-weight: 600; cursor: pointer;
+    margin: 0;
+  }
+  .category-chips {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px;
+  }
+  .chip {
+    padding: 7px 15px; border-radius: 20px;
+    border: 2px solid #E0E0E0; background: var(--white);
+    font-size: 0.83rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; color: var(--muted);
+  }
+  .chip.active, .chip:hover { background: var(--green); border-color: var(--green); color: #fff; }
+
+  .feedback-list-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 28px;
+    box-shadow: var(--card-shadow);
+  }
+  .feedback-list-card h3 { font-family:'Baloo 2',cursive; font-size:1.15rem; margin-bottom: 18px; color: var(--dark); }
+  .feedback-item {
+    padding: 14px 0;
+    border-bottom: 1px solid #F0EDE8;
+  }
+  .feedback-item:last-child { border-bottom: none; }
+  .fb-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .fb-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 0.85rem; flex-shrink:0;
+  }
+  .fb-name { font-weight: 700; font-size: 0.9rem; }
+  .fb-anon { color: var(--muted); font-style: italic; font-size:0.88rem; }
+  .fb-category {
+    background: #E8F5E9; color: var(--green);
+    border-radius: 8px; padding: 2px 9px;
+    font-size: 11px; font-weight: 800;
+  }
+  .fb-text { color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+  .fb-date { color: #bbb; font-size: 0.78rem; margin-top: 4px; }
+
+  /* SUCCESS TOAST */
+  .toast {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--green); color: #fff;
+    border-radius: 14px; padding: 14px 22px;
+    font-weight: 700; font-size: 0.93rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    z-index: 999;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* RESPONSIVE */
+ /* HOME QUICK CARDS */
+.quick-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+
+.quick-card{
+  background:var(--white);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:var(--card-shadow);
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.quick-card:hover{
+  transform:translateY(-5px);
+}
+
+.quick-card .qc-icon{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+.quick-card h4{
+  font-size:1.1rem;
+  margin-bottom:6px;
+  color:var(--dark);
+}
+
+.quick-card p{
+  color:var(--muted);
+  font-size:0.82rem;
+  margin-top:4px;
+}
+
+/* MEAL UPLOAD CARD */
+.meal-upload-card{
+  background: var(--white);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 24px;
+}
+
+.meal-upload-card h3{
+  margin-bottom: 15px;
+  font-family:'Baloo 2', cursive;
+  color: var(--dark);
+}
+
+.meal-upload-card input,
+.meal-upload-card textarea{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:2px solid #E5E7EB;
+  border-radius:12px;
+  font-size:15px;
+  background: var(--cream);
+}
+
+.meal-upload-card textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.meal-upload-card button{
+  background: var(--saffron);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.meal-upload-card button:hover{
+  background:#d95d00;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+
+  .header-inner{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .meal-card{
+    flex-direction:column;
+  }
+
+  .meal-photo{
+    width:100%;
+    height:220px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .quick-cards{
+    grid-template-columns:1fr;
+  }
+
+  .feedback-split{
+    grid-template-columns:1fr;
+  }
+
+}
+
+.quick-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+
+.quick-card{
+  background:var(--white);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:var(--card-shadow);
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.quick-card:hover{
+  transform:translateY(-5px);
+}
+
+.quick-card .qc-icon{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+.quick-card h4{
+  font-size:1.1rem;
+  margin-bottom:6px;
+  color:var(--dark);
+}
+
+.quick-card p{
+  color:var(--muted);
+  font-size:0.82rem;
+  margin-top:4px;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Language Bar -->
+<div class="lang-bar">
+  <span>Language / ಭಾಷೆ:</span>
+  <button class="lang-btn active" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('kn')">ಕನ್ನಡ</button>
+  <button onclick="logout()"
+style="
+    padding:8px 16px;
+    border:none;
+    border-radius:20px;
+    background:red;
+    color:white;
+    cursor:pointer;
+    margin-left:10px;
+">
+Logout
+
+</button>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="school-emblem">🏫</div>
+    <div class="header-text">
+      <h1><span>Shale</span>-Namma Pride</h1>
+      <div class="subtitle" data-en="School Transparency & Pride Portal · MindMatrix VTU Internship" data-kn="ಶಾಲೆಯ ಪಾರದರ್ಶಕತೆ ಮತ್ತು ಹೆಮ್ಮೆ ಪೋರ್ಟಲ್">School Transparency &amp; Pride Portal · MindMatrix VTU Internship</div>
+      <div class="kannada-sub" data-en="Building trust between school and community" data-kn="ಶಾಲೆ ಮತ್ತು ಸಮುದಾಯದ ನಡುವೆ ನಂಬಿಕೆ ನಿರ್ಮಿಸುತ್ತಿದ್ದೇವೆ">Building trust between school and community</div>
+    </div>
+  </div>
+</header>
+
+<!-- Nav Tabs -->
+<nav class="nav-tabs">
+  <div class="nav-inner">
+    <button class="nav-tab active" onclick="showSection('home')"><span class="tab-icon">🏠</span> <span data-en="Home" data-kn="ಮುಖಪುಟ">Home</span></button>
+    <button class="nav-tab" onclick="showSection('meal')"><span class="tab-icon">🍛</span> <span data-en="Daily Meal" data-kn="ದೈನಂದಿನ ಊಟ">Daily Meal</span></button>
+    <button class="nav-tab" onclick="showSection('facility')"><span class="tab-icon">🔬</span> <span data-en="Facility Tour" data-kn="ಸೌಲಭ್ಯ ಪ್ರವಾಸ">Facility Tour</span></button>
+    <button class="nav-tab" onclick="showSection('stars')"><span class="tab-icon">⭐</span> <span data-en="Student Stars" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಾರೆಗಳು">Student Stars</span></button>
+    <button class="nav-tab" onclick="showSection('feedback')"><span class="tab-icon">💬</span> <span data-en="Feedback Box" data-kn="ಪ್ರತಿಕ್ರಿಯೆ">Feedback Box</span></button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="section active">
+    <div class="hero-notice">
+      <h3>🎉 <span data-en="Welcome to Shale-Namma Pride!" data-kn="ಶಾಲೆ-ನಮ್ಮ ಹೆಮ್ಮೆಗೆ ಸ್ವಾಗತ!">Welcome to Shale-Namma Pride!</span></h3>
+      <p data-en="Explore your school's daily life — meals, labs, sports wins, and more. Stay connected with what makes our school special." data-kn="ನಿಮ್ಮ ಶಾಲೆಯ ದೈನಂದಿನ ಜೀವನವನ್ನು ಅನ್ವೇಷಿಸಿ — ಊಟ, ಲ್ಯಾಬ್‌ಗಳು, ಕ್ರೀಡಾ ವಿಜಯಗಳು ಮತ್ತು ಇನ್ನಷ್ಟು.">Explore your school's daily life — meals, labs, sports wins, and more. Stay connected with what makes our school special.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👨‍👩‍👧‍👦</div>
+        <div>
+          <div class="stat-val" style="color:var(--green)">342</div>
+          <div class="stat-label" data-en="Enrolled Students" data-kn="ನೋಂದಾಯಿತ ವಿದ್ಯಾರ್ಥಿಗಳು">Enrolled Students</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🍛</div>
+        <div>
+          <div class="stat-val" style="color:var(--saffron)">28</div>
+          <div class="stat-label" data-en="Meals Served This Month" data-kn="ಈ ತಿಂಗಳು ಬಡಿಸಿದ ಊಟ">Meals Served This Month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div>
+          <div class="stat-val" style="color:#9C27B0">14</div>
+          <div class="stat-label" data-en="Student Stars This Year" data-kn="ಈ ವರ್ಷ ವಿದ್ಯಾರ್ಥಿ ತಾರೆಗಳು">Student Stars This Year</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div>
+          <div class="stat-val" style="color:var(--sky)">61</div>
+          <div class="stat-label" data-en="Parent Feedbacks" data-kn="ಪೋಷಕರ ಪ್ರತಿಕ್ರಿಯೆಗಳು">Parent Feedbacks</div>
+        </div>
+      </div>
+    </div>
+    <div class="quick-cards">
+      <div class="quick-card meal" onclick="showSection('meal')">
+        <div class="qc-icon">🍛</div>
+        <h4 data-en="Today's Meal" data-kn="ಇಂದಿನ ಊಟ">Today's Meal</h4>
+        <p data-en="View today's mid-day meal photo and menu" data-kn="ಇಂದಿನ ಮಧ್ಯಾಹ್ನದ ಊಟದ ಫೋಟೋ ಮತ್ತು ಮೆನು ನೋಡಿ">View today's mid-day meal photo and menu</p>
+      </div>
+      <div class="quick-card facility" onclick="showSection('facility')">
+        <div class="qc-icon">🔬</div>
+        <h4 data-en="Facility Tour" data-kn="ಸೌಲಭ್ಯ ಪ್ರವಾಸ">Facility Tour</h4>
+        <p data-en="Lab, library, sports ground gallery" data-kn="ಲ್ಯಾಬ್, ಗ್ರಂಥಾಲಯ, ಕ್ರೀಡಾ ಮೈದಾನ ಗ್ಯಾಲರಿ">Lab, library, sports ground gallery</p>
+      </div>
+      <div class="quick-card stars" onclick="showSection('stars')">
+        <div class="qc-icon">🏆</div>
+        <h4 data-en="Student Stars" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಾರೆಗಳು">Student Stars</h4>
+        <p data-en="Weekly & sports achievers" data-kn="ಸಾಪ್ತಾಹಿಕ ಮತ್ತು ಕ್ರೀಡಾ ಸಾಧಕರು">Weekly &amp; sports achievers</p>
+      </div>
+      <div class="quick-card feedback" onclick="showSection('feedback')">
+        <div class="qc-icon">📬</div>
+        <h4 data-en="Feedback Box" data-kn="ಪ್ರತಿಕ್ರಿಯೆ ಪೆಟ್ಟಿಗೆ">Feedback Box</h4>
+        <p data-en="Send suggestions to SDMC committee" data-kn="SDMC ಸಮಿತಿಗೆ ಸಲಹೆ ಕಳುಹಿಸಿ">Send suggestions to SDMC committee</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAILY MEAL -->
+  <section id="meal" class="section">
+    <div class="sec-header">
+      <div class="sec-icon meal">🍛</div>
+      <div>
+        <h2 data-en="Daily Meal Update" data-kn="ದೈನಂದಿನ ಊಟ ಅಪ್ಡೇಟ್">Daily Meal Update</h2>
+        <p data-en="Today's mid-day meal — one update per day" data-kn="ಇಂದಿನ ಮಧ್ಯಾಹ್ನದ ಊಟ — ದಿನಕ್ಕೊಂದು ಅಪ್ಡೇಟ್">Today's mid-day meal — one update per day</p>
+      </div>
+    </div>
+
+    <div class="meal-upload-card">
+
+  <h3>🍱 Today's Meal</h3>
+
+  <input type="text" id="mealTitle" placeholder="Meal Title">
+
+  <textarea id="mealMenu" placeholder="Enter menu items"></textarea>
+
+  <input type="text" id="mealNutrition" placeholder="Nutrition Info">
+
+  <input type="text" id="mealImage" placeholder="Paste image URL">
+
+  <button onclick="uploadMeal()">
+    Upload Meal
+  </button>
+
+</div>
+
+<div id="mealDisplay"></div>
+
+    <div class="update-form" style="margin-top:24px">
+      <h3>📝 <span data-en="Post Today's Meal (Headmaster / Cook)" data-kn="ಇಂದಿನ ಊಟ ಪೋಸ್ಟ್ ಮಾಡಿ (ಮುಖ್ಯೋಪಾಧ್ಯಾಯರು / ಅಡುಗೆಯವರು)">Post Today's Meal (Headmaster / Cook)</span></h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label data-en="Menu Items" data-kn="ಮೆನು ಐಟಂಗಳು">Menu Items</label>
+          <input type="text" id="mealMenuOld" placeholder="e.g., Rice, Sambar, Banana..."/>
+        </div>
+        <div class="form-group">
+          <label data-en="Students Count" data-kn="ವಿದ್ಯಾರ್ಥಿಗಳ ಸಂಖ್ಯೆ">Students Count</label>
+          <input type="number" id="mealCount" placeholder="e.g., 342"/>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group">
+          <label data-en="Notes (optional)" data-kn="ಟಿಪ್ಪಣಿಗಳು (ಐಚ್ಛಿಕ)">Notes</label>
+          <textarea id="mealNotes" placeholder="Any special notes about today's meal..."></textarea>
+        </div>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:10px; align-items:center;">
+        <button class="btn btn-orange" onclick="postMeal()">🍛 <span data-en="Post Meal Update" data-kn="ಊಟ ಅಪ್ಡೇಟ್ ಪೋಸ್ಟ್ ಮಾಡಿ">Post Meal Update</span></button>
+        <small style="color:var(--muted)" data-en="⚠ One update per day allowed" data-kn="⚠ ದಿನಕ್ಕೆ ಒಂದು ಅಪ್ಡೇಟ್ ಮಾತ್ರ">⚠ One update per day allowed</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- FACILITY TOUR -->
+  <section id="facility" class="section">
+    <div class="sec-header">
+      <div class="sec-icon facility">🔬</div>
+      <div>
+        <h2 data-en="Facility Tour" data-kn="ಸೌಲಭ್ಯ ಪ್ರವಾಸ">Facility Tour</h2>
+        <p data-en="Gallery of labs, library, and school facilities" data-kn="ಲ್ಯಾಬ್‌ಗಳು, ಗ್ರಂಥಾಲಯ ಮತ್ತು ಶಾಲಾ ಸೌಲಭ್ಯಗಳ ಗ್ಯಾಲರಿ">Gallery of labs, library, and school facilities</p>
+      </div>
+    </div>
+    <div class="facility-tabs">
+      <button class="ftab active" onclick="filterFacility('all', this)">All</button>
+      <button class="ftab" onclick="filterFacility('lab', this)">🔬 Labs</button>
+      <button class="ftab" onclick="filterFacility('library', this)">📚 Library</button>
+      <button class="ftab" onclick="filterFacility('sports', this)">⚽ Sports</button>
+      <button class="ftab" onclick="filterFacility('toilet', this)">🚿 Sanitation</button>
+    </div>
+    <div class="facility-grid" id="facilityGrid">
+      <div class="facility-card" data-type="lab">
+        <div class="facility-thumb lab"><span class="quality-badge">Excellent</span>🔬</div>
+        <div class="facility-info">
+          <h4 data-en="Science Laboratory" data-kn="ವಿಜ್ಞಾನ ಪ್ರಯೋಗಾಲಯ">Science Laboratory</h4>
+          <p data-en="Equipped with 20 student stations, microscopes, and chemical kits." data-kn="20 ವಿದ್ಯಾರ್ಥಿ ಸ್ಟೇಷನ್‌ಗಳು, ಸೂಕ್ಷ್ಮದರ್ಶಕಗಳು ಮತ್ತು ರಾಸಾಯನಿಕ ಕಿಟ್‌ಗಳೊಂದಿಗೆ ಸಜ್ಜುಗೊಂಡಿದೆ.">Equipped with 20 student stations, microscopes, and chemical kits.</p>
+          <div class="last-updated">🕐 Updated: May 1, 2026</div>
+        </div>
+      </div>
+      <div class="facility-card" data-type="lab">
+        <div class="facility-thumb lab"><span class="quality-badge">Good</span>💻</div>
+        <div class="facility-info">
+          <h4 data-en="Computer Lab" data-kn="ಕಂಪ್ಯೂಟರ್ ಲ್ಯಾಬ್">Computer Lab</h4>
+          <p data-en="25 computers with internet access. Smart class enabled." data-kn="ಇಂಟರ್ನೆಟ್ ಪ್ರವೇಶದೊಂದಿಗೆ 25 ಕಂಪ್ಯೂಟರ್‌ಗಳು.">25 computers with internet access. Smart class enabled.</p>
+          <div class="last-updated">🕐 Updated: Apr 28, 2026</div>
+        </div>
+      </div>
+      <div class="facility-card" data-type="library">
+        <div class="facility-thumb library"><span class="quality-badge">Excellent</span>📚</div>
+        <div class="facility-info">
+          <h4 data-en="School Library" data-kn="ಶಾಲಾ ಗ್ರಂಥಾಲಯ">School Library</h4>
+          <p data-en="Over 1,200 books in Kannada and English. Story time every Friday." data-kn="ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ 1,200+ ಪುಸ್ತಕಗಳು.">Over 1,200 books in Kannada and English. Story time every Friday.</p>
+          <div class="last-updated">🕐 Updated: May 2, 2026</div>
+        </div>
+      </div>
+      <div class="facility-card" data-type="sports">
+        <div class="facility-thumb sports"><span class="quality-badge">Good</span>⚽</div>
+        <div class="facility-info">
+          <h4 data-en="Sports Ground" data-kn="ಕ್ರೀಡಾ ಮೈದಾನ">Sports Ground</h4>
+          <p data-en="Football, Kabaddi, and Kho-Kho courts. District-level champion 2025." data-kn="ಫುಟ್‌ಬಾಲ್, ಕಬಡ್ಡಿ ಮತ್ತು ಖೋ-ಖೋ ಕೋರ್ಟ್‌ಗಳು.">Football, Kabaddi, and Kho-Kho courts. District-level champion 2025.</p>
+          <div class="last-updated">🕐 Updated: Apr 30, 2026</div>
+        </div>
+      </div>
+      <div class="facility-card" data-type="toilet">
+        <div class="facility-thumb toilet"><span class="quality-badge">Clean</span>🚿</div>
+        <div class="facility-info">
+          <h4 data-en="Sanitation Block" data-kn="ನೈರ್ಮಲ್ಯ ಬ್ಲಾಕ್">Sanitation Block</h4>
+          <p data-en="Separate blocks for boys and girls. Clean water and soap available." data-kn="ಹುಡುಗರು ಮತ್ತು ಹುಡುಗಿಯರಿಗೆ ಪ್ರತ್ಯೇಕ ಬ್ಲಾಕ್‌ಗಳು.">Separate blocks for boys and girls. Clean water and soap available.</p>
+          <div class="last-updated">🕐 Updated: May 3, 2026</div>
+        </div>
+      </div>
+      <div class="facility-card" data-type="lab">
+        <div class="facility-thumb lab"><span class="quality-badge">New</span>🎨</div>
+        <div class="facility-info">
+          <h4 data-en="Art & Craft Room" data-kn="ಕಲೆ ಮತ್ತು ಕರಕುಶಲ ಕೊಠಡಿ">Art &amp; Craft Room</h4>
+          <p data-en="New creativity corner with painting, pottery, and origami supplies." data-kn="ಚಿತ್ರಕಲೆ, ಮಡಕೆ ಮತ್ತು ಒರಿಗಾಮಿ ಸರಬರಾಜುಗಳೊಂದಿಗೆ ಹೊಸ ಸೃಜನಶೀಲತೆ ಮೂಲೆ.">New creativity corner with painting, pottery, and origami supplies.</p>
+          <div class="last-updated">🕐 Updated: Apr 25, 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDENT STARS -->
+  <section id="stars" class="section">
+    <div class="sec-header">
+      <div class="sec-icon stars">⭐</div>
+      <div>
+        <h2 data-en="Student Stars" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಾರೆಗಳು">Student Stars</h2>
+        <p data-en="Celebrating the week's top achievers and sports winners" data-kn="ಈ ವಾರದ ಅಗ್ರ ಸಾಧಕರು ಮತ್ತು ಕ್ರೀಡಾ ವಿಜೇತರನ್ನು ಆಚರಿಸಲಾಗುತ್ತಿದೆ">Celebrating the week's top achievers and sports winners</p>
+      </div>
+    </div>
+    <div class="stars-grid">
+      <div class="star-card week-winner">
+        <div style="height:14px"></div>
+        <div class="star-avatar">👦</div>
+        <div class="star-name">Arjun Patil</div>
+        <div class="star-class" data-en="Class 7B" data-kn="7ನೇ ತರಗತಿ B">Class 7B</div>
+        <div class="star-achievement">🏅 Scored 100% in Maths Test</div>
+        <div class="star-date">Week of Apr 28 – May 3, 2026</div>
+      </div>
+      <div class="star-card">
+        <div class="star-avatar" style="background:linear-gradient(135deg,#0077CC,#00BCD4)">👧</div>
+        <div class="star-name">Kavya Nair</div>
+        <div class="star-class" data-en="Class 6A" data-kn="6ನೇ ತರಗತಿ A">Class 6A</div>
+        <div class="star-achievement" style="background:#E3F2FD; color:var(--sky)">⚽ District Football Champion</div>
+        <div class="star-date">April 2026</div>
+      </div>
+      <div class="star-card">
+        <div class="star-avatar" style="background:linear-gradient(135deg,#9C27B0,#E91E63)">👦</div>
+        <div class="star-name">Raju Hegde</div>
+        <div class="star-class" data-en="Class 8C" data-kn="8ನೇ ತರಗತಿ C">Class 8C</div>
+        <div class="star-achievement" style="background:#F3E5F5; color:#9C27B0">🎨 State Art Competition Winner</div>
+        <div class="star-date">March 2026</div>
+      </div>
+      <div class="star-card">
+        <div class="star-avatar" style="background:linear-gradient(135deg,var(--green),var(--green-light))">👧</div>
+        <div class="star-name">Priya Gowda</div>
+        <div class="star-class" data-en="Class 5B" data-kn="5ನೇ ತರಗತಿ B">Class 5B</div>
+        <div class="star-achievement">📖 Read 50 Library Books</div>
+        <div class="star-date">March 2026</div>
+      </div>
+    </div>
+
+    <div class="update-form" style="margin-top:30px">
+      <h3>🏆 <span data-en="Nominate a Student Star" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಾರೆಯನ್ನು ನಾಮನಿರ್ದೇಶನ ಮಾಡಿ">Nominate a Student Star</span></h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label data-en="Student Name" data-kn="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು">Student Name</label>
+          <input type="text" id="starName" placeholder="Full name..."/>
+        </div>
+        <div class="form-group">
+          <label data-en="Class" data-kn="ತರಗತಿ">Class</label>
+          <input type="text" id="starClass" placeholder="e.g., 7B"/>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group">
+          <label data-en="Achievement" data-kn="ಸಾಧನೆ">Achievement</label>
+          <input type="text" id="starAchieve" placeholder="e.g., Won Kabaddi tournament, 100% in Science..."/>
+        </div>
+        <div class="form-group">
+          <label data-en="Category" data-kn="ವಿಭಾಗ">Category</label>
+          <select id="starCategory">
+            <option>🏅 Academic</option>
+            <option>⚽ Sports</option>
+            <option>🎨 Arts & Culture</option>
+            <option>📖 Reading</option>
+            <option>🌱 Community Service</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn btn-green" onclick="nominateStar()">⭐ <span data-en="Add Student Star" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಾರೆ ಸೇರಿಸಿ">Add Student Star</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK BOX -->
+  <section id="feedback" class="section">
+    <div class="sec-header">
+      <div class="sec-icon feedback">💬</div>
+      <div>
+        <h2 data-en="Feedback Box" data-kn="ಪ್ರತಿಕ್ರಿಯೆ ಪೆಟ್ಟಿಗೆ">Feedback Box</h2>
+        <p data-en="Send your suggestions to the SDMC committee. Anonymous option available." data-kn="SDMC ಸಮಿತಿಗೆ ನಿಮ್ಮ ಸಲಹೆಗಳನ್ನು ಕಳುಹಿಸಿ. ಅನಾಮಧೇಯ ಆಯ್ಕೆ ಲಭ್ಯವಿದೆ.">Send your suggestions to the SDMC committee. Anonymous option available.</p>
+      </div>
+    </div>
+    <div class="feedback-split">
+      <div class="feedback-form-card">
+        <h3>📝 <span data-en="Submit Feedback" data-kn="ಪ್ರತಿಕ್ರಿಯೆ ಸಲ್ಲಿಸಿ">Submit Feedback</span></h3>
+        <div class="anon-toggle">
+          <input type="checkbox" id="anonCheck" onchange="toggleAnon(this)"/>
+          <label for="anonCheck" data-en="Submit anonymously (your name will be hidden)" data-kn="ಅನಾಮಧೇಯವಾಗಿ ಸಲ್ಲಿಸಿ (ನಿಮ್ಮ ಹೆಸರು ಮರೆಮಾಡಲಾಗುತ್ತದೆ)">Submit anonymously (your name will be hidden)</label>
+        </div>
+        <div id="nameField">
+          <label data-en="Your Name (Parent / Guardian)" data-kn="ನಿಮ್ಮ ಹೆಸರು">Your Name</label>
+          <input type="text" id="fbName" placeholder="e.g., Suresh Patil"/>
+          <div style="height:12px"></div>
+        </div>
+        <label data-en="Category" data-kn="ವಿಭಾಗ">Category</label>
+        <div class="category-chips">
+          <span class="chip active" onclick="selectChip(this)">🍛 Meals</span>
+          <span class="chip" onclick="selectChip(this)">🔬 Facilities</span>
+          <span class="chip" onclick="selectChip(this)">📚 Teaching</span>
+          <span class="chip" onclick="selectChip(this)">🚌 Transport</span>
+          <span class="chip" onclick="selectChip(this)">💡 Other</span>
+        </div>
+        <label data-en="Your Feedback / Suggestion" data-kn="ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ / ಸಲಹೆ">Your Feedback</label>
+        <textarea id="fbText" placeholder="Share your thoughts, suggestions, or concerns..." style="margin-top:8px"></textarea>
+        <div style="margin-top:16px">
+          <button class="btn btn-blue" onclick="submitFeedback()">📬 <span data-en="Submit Feedback" data-kn="ಪ್ರತಿಕ್ರಿಯೆ ಸಲ್ಲಿಸಿ">Submit Feedback</span></button>
+        </div>
+      </div>
+      <div class="feedback-list-card">
+  <h3>📋 <span data-en="Recent Feedback" data-kn="ಇತ್ತೀಚಿನ ಪ್ರತಿಕ್ರಿಯೆ">Recent Feedback</span></h3>
+
+  <div id="feedbackList"></div>
+</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // Language system
+  let currentLang = 'en';
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+      el.textContent = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+    });
+  }
+
+  // Tab navigation
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const tabs = document.querySelectorAll('.nav-tab');
+    const map = {home:0, meal:1, facility:2, stars:3, feedback:4};
+    tabs[map[id]].classList.add('active');
+  }
+
+  // Facility filter
+  function filterFacility(type, btn) {
+    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.facility-card').forEach(c => {
+      c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
+    });
+  }
+
+  // Category chips
+  function selectChip(el) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Anonymous toggle
+  function toggleAnon(cb) {
+    document.getElementById('nameField').style.display = cb.checked ? 'none' : 'block';
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  // Post Meal
+  let mealPostedToday = false;
+  function postMeal() {
+    if (mealPostedToday) { showToast('⚠ Only one meal update allowed per day!'); return; }
+    const menu = document.getElementById('mealMenu').value.trim();
+    const count = document.getElementById('mealCount').value.trim();
+    if (!menu) { showToast('Please enter the menu items!'); return; }
+    mealPostedToday = true;
+    const items = menu.split(',').map(i => `<span class="meal-tag">${i.trim()}</span>`).join('');
+    const today = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+    const newCard = `
+      <div class="meal-card">
+        <div class="meal-photo" style="background:linear-gradient(135deg,var(--green),var(--green-light))">
+          🍽️<span class="date-badge">Posted Now</span>
+        </div>
+        <div class="meal-info">
+          <h3>Today's Meal Update</h3>
+          <div class="meal-items">${items}</div>
+          <div class="meal-meta">
+            <span>👨‍🍳 Cook's Update</span>
+            ${count ? `<span>✅ ${count} students</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+    document.getElementById('mealFeed').insertAdjacentHTML('afterbegin', newCard);
+    document.getElementById('mealMenu').value = '';
+    document.getElementById('mealCount').value = '';
+    document.getElementById('mealNotes').value = '';
+    showToast('✅ Meal update posted successfully!');
+  }
+
+  // Nominate Star
+  function nominateStar() {
+    const name = document.getElementById('starName').value.trim();
+    const cls = document.getElementById('starClass').value.trim();
+    const achieve = document.getElementById('starAchieve').value.trim();
+    const cat = document.getElementById('starCategory').value;
+    if (!name || !achieve) { showToast('Please fill in student name and achievement!'); return; }
+    const emojis = ['👦','👧','🧒'];
+    const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+    const colors = ['linear-gradient(135deg,#FF6B00,#FFB800)','linear-gradient(135deg,#0077CC,#00BCD4)','linear-gradient(135deg,#9C27B0,#E91E63)','linear-gradient(135deg,var(--green),var(--green-light))'];
+    const col = colors[Math.floor(Math.random()*colors.length)];
+    const card = `
+      <div class="star-card">
+        <div class="star-avatar" style="background:${col}">${emoji}</div>
+        <div class="star-name">${name}</div>
+        <div class="star-class">${cls ? 'Class '+cls : ''}</div>
+        <div class="star-achievement">${cat} ${achieve}</div>
+        <div class="star-date">Added just now</div>
+      </div>`;
+    document.querySelector('.stars-grid').insertAdjacentHTML('afterbegin', card);
+    document.getElementById('starName').value = '';
+    document.getElementById('starClass').value = '';
+    document.getElementById('starAchieve').value = '';
+    showToast('⭐ Student star added!');
+  }
+
+  // Submit Feedback
+  async function submitFeedback() {
+    const isAnon = document.getElementById('anonCheck').checked;
+    const name = isAnon ? null : document.getElementById('fbName').value.trim();
+    const text = document.getElementById('fbText').value.trim();
+    const cat = document.querySelector('.chip.active')?.textContent || '💡 Other';
+    if (!text) { showToast('Please enter your feedback!'); return; }
+    if (!isAnon && !name) { showToast('Please enter your name or choose anonymous!'); return; }
+    const initial = isAnon ? '🔒' : (name[0] || '?');
+    const avatarColor = isAnon ? 'linear-gradient(135deg,#9C27B0,#E91E63)' : 'linear-gradient(135deg,var(--sky),#00BCD4)';
+    const nameHtml = isAnon
+      ? `<div class="fb-anon">Anonymous Parent</div>`
+      : `<div class="fb-name">${name}</div>`;
+    const item = `
+      <div class="feedback-item" style="animation:fadeUp 0.3s ease">
+        <div class="fb-header">
+          <div class="fb-avatar" style="background:${avatarColor}">${initial}</div>
+          <div>${nameHtml}</div>
+          <span class="fb-category">${cat}</span>
+        </div>
+        <div class="fb-text">${text}</div>
+        <div class="fb-date">Just now</div>
+      </div>`;
+    document.getElementById('feedbackList').insertAdjacentHTML('afterbegin', item);
+    await addDoc(collection(db, "feedbacks"), {
+    name: name,
+    category: cat,
+    message: text,
+    date: new Date().toISOString()
+});
+
+
+
+document.getElementById('fbText').value = '';
+  }
+</script>
+<script type="module">
+
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBGA2EWzfYDmpf1LjI97a5sIexe0lOkxgs",
+  authDomain: "shalenammapride-fb590.firebaseapp.com",
+  projectId: "shalenammapride-fb590",
+  storageBucket: "shalenammapride-fb590.firebasestorage.app",
+  messagingSenderId: "511780175950",
+  appId: "1:511780175950:web:fa3d09184cbf6cb8f5831f",
+  measurementId: "G-6VN8H9FZLL"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+    }
+
+});
+
+
+
+console.log("Firebase Connected Successfully");
+
+
+
+// ==========================
+// UPLOAD MEAL
+// ==========================
+
+window.uploadMeal = async function () {
+
+    const title = document.getElementById("mealTitle").value;
+
+    const menu = document.getElementById("mealMenu").value;
+
+    const nutrition = document.getElementById("mealNutrition").value;
+
+    const image = document.getElementById("mealImage").value;
+
+    if (!title || !menu || !nutrition || !image) {
+
+        showToast("Please fill all fields");
+
+        return;
+    }
+
+    await addDoc(collection(db, "meals"), {
+
+        title: title,
+        menu: menu,
+        nutrition: nutrition,
+        image: image
+
+    });
+
+    showToast("Meal uploaded successfully!");
+
+    document.getElementById("mealTitle").value = "";
+    document.getElementById("mealMenu").value = "";
+    document.getElementById("mealNutrition").value = "";
+    document.getElementById("mealImage").value = "";
+
+    loadMeals();
+
+};
+
+
+
+// ==========================
+// LOAD MEALS
+// ==========================
+
+async function loadMeals() {
+
+    const mealDisplay = document.getElementById("mealDisplay");
+
+    mealDisplay.innerHTML = "";
+
+    const querySnapshot = await getDocs(collection(db, "meals"));
+
+    querySnapshot.forEach((mealDoc) => {
+
+        const meal = mealDoc.data();
+
+        const mealId = mealDoc.id;
+
+        mealDisplay.innerHTML += `
+
+        <div style="
+            display:flex;
+            gap:30px;
+            background:white;
+            padding:20px;
+            border-radius:20px;
+            margin-top:20px;
+            align-items:center;
+            flex-wrap:wrap;
+            box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        ">
+
+            <img src="${meal.image}"
+
+                style="
+                    width:220px;
+                    height:220px;
+                    object-fit:cover;
+                    border-radius:20px;
+                ">
+
+            <div>
+
+                <h2 style="margin-bottom:10px;">
+                    ${meal.title}
+                </h2>
+
+                <p style="margin-bottom:8px;">
+                    <b>Menu:</b> ${meal.menu}
+                </p>
+
+                <p style="margin-bottom:8px;">
+                    <b>Nutrition:</b> ${meal.nutrition}
+                </p>
+
+                <button onclick="deleteMeal('${mealId}')"
+
+                    style="
+                        margin-top:15px;
+                        padding:10px 20px;
+                        border:none;
+                        border-radius:10px;
+                        background:red;
+                        color:white;
+                        cursor:pointer;
+                        font-weight:bold;
+                    ">
+
+                    Delete Meal
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+
+// ==========================
+// DELETE MEAL
+// ==========================
+
+window.deleteMeal = async function(mealId) {
+
+    await deleteDoc(doc(db, "meals", mealId));
+
+    showToast("Meal deleted successfully!");
+
+    loadMeals();
+
+};
+
+
+
+// ==========================
+// FEEDBACK SUBMIT
+// ==========================
+
+window.submitFeedback = async function () {
+
+    const isAnon = document.getElementById("anonCheck").checked;
+
+    const name = isAnon
+        ? "Anonymous"
+        : document.getElementById("fbName").value;
+
+    const text = document.getElementById("fbText").value;
+
+    const category =
+        document.querySelector(".chip.active")?.innerText || "Other";
+
+    if (!text) {
+
+        showToast("Please enter feedback");
+
+        return;
+    }
+
+    await addDoc(collection(db, "feedbacks"), {
+
+        name: name,
+        message: text,
+        category: category,
+        date: new Date().toLocaleString()
+
+    });
+
+    showToast("Feedback submitted!");
+
+    document.getElementById("fbText").value = "";
+
+    if (!isAnon) {
+
+        document.getElementById("fbName").value = "";
+    }
+
+    loadFeedbacks();
+
+};
+
+
+
+// ==========================
+// LOAD FEEDBACKS
+// ==========================
+
+async function loadFeedbacks() {
+
+    const feedbackList =
+        document.getElementById("feedbackList");
+
+    feedbackList.innerHTML = "";
+
+    const querySnapshot =
+        await getDocs(collection(db, "feedbacks"));
+
+    querySnapshot.forEach((fbDoc) => {
+
+        const fb = fbDoc.data();
+
+        feedbackList.innerHTML += `
+
+        <div class="feedback-item">
+
+            <div class="fb-header">
+
+                <div class="fb-avatar">
+                    ${fb.name.charAt(0)}
+                </div>
+
+                <div class="fb-name">
+                    ${fb.name}
+                </div>
+
+                <span class="fb-category">
+                    ${fb.category}
+                </span>
+
+            </div>
+
+            <div class="fb-text">
+                ${fb.message}
+            </div>
+
+            <div class="fb-date">
+                ${fb.date}
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+
+// ==========================
+// INITIAL LOAD
+// ==========================
+
+loadMeals();
+
+loadFeedbacks();
+
+window.logout = function () {
+
+signOut(auth)
+.then(() => {
+
+window.location.href = "login.html";
+
+});
+
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>ShaleNammaPride Login</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+
+            height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:
+            linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+            url('https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200');
+
+            background-size:cover;
+            background-position:center;
+
+        }
+
+        .login-box{
+
+            width:420px;
+
+            padding:40px;
+
+            border-radius:25px;
+
+            background:rgba(255,255,255,0.15);
+
+            backdrop-filter:blur(10px);
+
+            text-align:center;
+
+            color:white;
+
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+
+        }
+
+        .login-box h1{
+
+            margin-bottom:10px;
+            font-size:48px;
+
+        }
+
+        .login-box p{
+
+            margin-bottom:30px;
+            color:#eee;
+
+        }
+
+        input{
+
+            width:100%;
+
+            padding:16px;
+
+            margin-bottom:20px;
+
+            border:none;
+
+            border-radius:12px;
+
+            font-size:16px;
+
+        }
+
+        button{
+
+            width:100%;
+
+            padding:16px;
+
+            border:none;
+
+            border-radius:12px;
+
+            background:#f59e0b;
+
+            color:white;
+
+            font-size:20px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+
+        }
+
+        button:hover{
+
+            background:#d97706;
+
+        }
+
+        .register-link{
+
+            margin-top:20px;
+
+        }
+
+        .register-link a{
+
+            color:#f59e0b;
+
+            text-decoration:none;
+
+            font-weight:bold;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Login</h1>
+
+        <p>Welcome back to ShaleNammaPride</p>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Enter Email"
+        >
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Enter Password"
+        >
+
+        <button onclick="loginUser()">
+            Login Now
+        </button>
+
+        <div class="register-link">
+
+            Don't have account?
+
+            <a href="/js/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="./firebase.js"></script>
+
+</body>
+
+</html>
